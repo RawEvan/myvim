@@ -1,8 +1,0 @@
-import cv2
-import PIL
-
-while 1:
-    cap = cv2.VideoCapture(0)
-    suc, frame = cap.read()
-    cv2.namedWindow('test')
-    cv2.imshow('test', frame)
