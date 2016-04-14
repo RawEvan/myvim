@@ -1,0 +1,41 @@
+﻿#coding:utf-8
+#登录校园网
+import sys
+import re
+import urllib2
+import urllib
+import cookielib
+import time
+
+password = '220200'
+username = '201292268'
+hostUrl = 'http://172.20.20.1/srun_portal.html?&ac_id=6&sys='
+postUrl = 'http://172.20.20.1/cgi-bin/srun_portal'
+headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36',
+        'Referer' : 'http://172.20.20.1/srun_portal.html?&ac_id=6&sys=',
+        'Origin' : 'http:/172.20.20.1',
+        }
+postData = {'ac_id' : '6',
+        'action' : 'login',
+        'password' : password,
+        'type' : '1',
+        'username' : username,
+        }
+
+cookieJar = cookielib.LWPCookieJar()
+cookieSup = urllib2.HTTPCookieProcessor(cookieJar)
+opener = urllib2.build_opener(cookieSup, urllib2.HTTPHandler)
+urllib2.install_opener(opener)
+hostHtml = urllib2.urlopen(hostUrl) #访问登录页面，获得初始cookies
+postData = urllib.urlencode(postData)
+request = urllib2.Request(postUrl, postData, headers)
+print request
+response = urllib2.urlopen(request)
+text = response.read().decode("utf-8")
+print text
+if 'login_ok' in text:
+    print 'login success!'
+    time.sleep(3)
+else:
+    print 'edu login fail'
+    raw_input('press Enter')
